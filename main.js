@@ -29,6 +29,7 @@
   const ticTacToe = () => {
     // Cache DOM
     let player = 'X';
+    const endgameScreen = document.getElementById('endgame');
     const exSymbol = 'X';
     const circleSymbol = 'O';
     const squares = document.querySelectorAll('.square');
@@ -41,6 +42,12 @@
 
     function changeTurns() {
       xTurn = !xTurn;
+      player = player === exSymbol ? circleSymbol : exSymbol;
+    }
+
+    function victoryScreen() {
+      endgameScreen.classList.toggle('hidden');
+      endgameScreen.innerHTML = `${player} wins a sweet dub`;
     }
 
     function checkForWin() {
@@ -65,9 +72,7 @@
           sqrArr[winConditions[i][1]] === player &&
           sqrArr[winConditions[i][2]] === player
         ) {
-          console.log(`And the winner is ${player}`);
-          player = player === exSymbol ? circleSymbol : exSymbol;
-          return true;
+          return victoryScreen();
         }
       }
       return false;
@@ -77,8 +82,8 @@
       const square = e.target;
       const currentSymbol = xTurn ? circleSymbol : exSymbol;
       drawMark(square, currentSymbol);
-      changeTurns();
       checkForWin();
+      changeTurns();
     }
 
     // Listeners
