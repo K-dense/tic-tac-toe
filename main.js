@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable no-plusplus */
 (function () {
   const initialRender = () => {
@@ -27,19 +28,57 @@
 
   const ticTacToe = () => {
     // Cache DOM
-    const exClass = 'x';
-    const circleClass = 'O';
+    let player = 'X';
+    const exSymbol = 'X';
+    const circleSymbol = 'O';
     const squares = document.querySelectorAll('.square');
     let xTurn;
 
-    function drawMark(square, currentClass) {
-      square.innerHTML = currentClass;
+    function drawMark(square, currentSymbol) {
+      const cell = square;
+      cell.innerHTML = currentSymbol;
+    }
+
+    function changeTurns() {
+      xTurn = !xTurn;
+    }
+
+    function checkForWin() {
+      const winConditions = [
+        // Horizontal wins
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        // Vertical wins
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        // Diagonal wins
+        [0, 4, 8],
+        [2, 4, 6],
+      ];
+      const sqrArr = [];
+      squares.forEach((square) => sqrArr.push(square.innerHTML));
+      for (let i = 0; i < winConditions.length; i++) {
+        if (
+          sqrArr[winConditions[i][0]] === player &&
+          sqrArr[winConditions[i][1]] === player &&
+          sqrArr[winConditions[i][2]] === player
+        ) {
+          console.log(`And the winner is ${player}`);
+          player = player === exSymbol ? circleSymbol : exSymbol;
+          return true;
+        }
+      }
+      return false;
     }
 
     function squareHandler(e) {
       const square = e.target;
-      const currentClass = xTurn ? circleClass : exClass;
-      drawMark(square, currentClass);
+      const currentSymbol = xTurn ? circleSymbol : exSymbol;
+      drawMark(square, currentSymbol);
+      changeTurns();
+      checkForWin();
     }
 
     // Listeners
