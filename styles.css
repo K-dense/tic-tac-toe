@@ -4,9 +4,8 @@
   padding: 0;
 }
 
-body {
+.game-board-container {
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
@@ -17,11 +16,6 @@ body {
   gap: 10px;
   grid-template-columns: repeat(3, 1fr);
 }
-
-.hidden {
-  display: none;
-}
-
 
 .square {
   display: flex;
@@ -47,6 +41,19 @@ body {
   right: 0px;
   bottom: 0px;
   left: 0px;
-  filter: blur(5px);
+  filter: blur(8px);
   background-color: #ccc;
+  z-index: 1;
+}
+
+.notification-msg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+  z-index: 2;
+}
+
+.hidden {
+  display: none;
 }

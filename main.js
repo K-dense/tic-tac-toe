@@ -30,6 +30,7 @@
     // Cache DOM
     let player = 'X';
     const endgameScreen = document.getElementById('endgame');
+    const notification = document.getElementById('notific');
     const exSymbol = 'X';
     const circleSymbol = 'O';
     const squares = document.querySelectorAll('.square');
@@ -47,7 +48,8 @@
 
     function victoryScreen() {
       endgameScreen.classList.toggle('hidden');
-      endgameScreen.innerHTML = `${player} wins a sweet dub`;
+      notification.classList.toggle('hidden');
+      notification.innerHTML = `${player} wins a sweet dub`;
     }
 
     function checkForWin() {
