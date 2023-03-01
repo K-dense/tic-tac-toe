@@ -17,9 +17,15 @@
       }
     }
 
+    function clear(squares) {
+      squares.forEach((square) => {
+        board.removeChild(square);
+      });
+    }
+
     board.classList.toggle('hidden');
 
-    return { board, render };
+    return { board, render, clear };
   };
 
   const newBoard = initialRender();
@@ -31,6 +37,7 @@
     let player = 'X';
     const endgameScreen = document.getElementById('endgame');
     const notification = document.getElementById('notific');
+    const playAgainBtn = document.getElementById('play-again');
     const exSymbol = 'X';
     const circleSymbol = 'O';
     const squares = document.querySelectorAll('.square');
@@ -48,7 +55,6 @@
 
     function victoryScreen() {
       endgameScreen.classList.toggle('hidden');
-      notification.classList.toggle('hidden');
       notification.innerHTML = `${player} wins a sweet dub`;
     }
 
@@ -88,10 +94,17 @@
       changeTurns();
     }
 
+    function clearBoard() {
+      newBoard.clear(squares);
+      newBoard.render();
+      endgameScreen.classList.toggle('hidden');
+    }
+
     // Listeners
     squares.forEach((square) => {
       square.addEventListener('click', squareHandler, { once: true });
     });
+    playAgainBtn.addEventListener('click', clearBoard);
   };
   ticTacToe();
 }());
