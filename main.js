@@ -1,7 +1,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable no-plusplus */
 (function () {
-  const initialRender = () => {
+  const gameBoard = () => {
     // cache DOM
     const board = document.getElementById('game-board');
 
@@ -19,20 +19,24 @@
 
     function clear(squares) {
       squares.forEach((square) => {
-        board.removeChild(square);
+        square.innerHTML = '';
       });
+      // squares.forEach((square) => {
+      //   board.removeChild(square);
+      // });
     }
-
-    board.classList.toggle('hidden');
 
     return { board, render, clear };
   };
 
-  const newBoard = initialRender();
-  newBoard.render();
-  newBoard.board.classList.toggle('hidden');
+  const newBoard = gameBoard();
+
+  function callBoard() {
+    newBoard.render();
+  }
 
   const ticTacToe = () => {
+    callBoard();
     // Cache DOM
     let player = 'X';
     const endgameScreen = document.getElementById('endgame');
@@ -43,6 +47,11 @@
     const squares = document.querySelectorAll('.square');
     let xTurn;
 
+    if (!endgameScreen.classList.contains('hidden')) {
+      newBoard.clear(squares);
+      endgameScreen.classList.toggle('hidden');
+    }
+
     function drawMark(square, currentSymbol) {
       const cell = square;
       cell.innerHTML = currentSymbol;
@@ -51,11 +60,6 @@
     function changeTurns() {
       xTurn = !xTurn;
       player = player === exSymbol ? circleSymbol : exSymbol;
-    }
-
-    function victoryScreen() {
-      endgameScreen.classList.toggle('hidden');
-      notification.innerHTML = `${player} wins a sweet dub`;
     }
 
     function checkForWin() {
@@ -80,31 +84,32 @@
           sqrArr[winConditions[i][1]] === player &&
           sqrArr[winConditions[i][2]] === player
         ) {
-          return victoryScreen();
+          return true;
         }
       }
       return false;
+    }
+
+    function victoryScreen() {
+      endgameScreen.classList.toggle('hidden');
+      notification.innerHTML = `${player} wins a sweet dub`;
     }
 
     function squareHandler(e) {
       const square = e.target;
       const currentSymbol = xTurn ? circleSymbol : exSymbol;
       drawMark(square, currentSymbol);
-      checkForWin();
+      if (checkForWin()) {
+        victoryScreen();
+      }
       changeTurns();
-    }
-
-    function clearBoard() {
-      newBoard.clear(squares);
-      newBoard.render();
-      endgameScreen.classList.toggle('hidden');
     }
 
     // Listeners
     squares.forEach((square) => {
       square.addEventListener('click', squareHandler, { once: true });
     });
-    playAgainBtn.addEventListener('click', clearBoard);
+    playAgainBtn.addEventListener('click', ticTacToe);
   };
   ticTacToe();
 }());
