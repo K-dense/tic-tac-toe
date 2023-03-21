@@ -19,6 +19,7 @@
 
     function clear(squares) {
       squares.forEach((square) => {
+        // eslint-disable-next-line no-param-reassign
         square.innerHTML = '';
       });
       // squares.forEach((square) => {
@@ -31,12 +32,12 @@
 
   const newBoard = gameBoard();
 
-  function callBoard() {
-    newBoard.render();
-  }
+  // function callBoard() {
+  //   newBoard.render();
+  // }
 
   const ticTacToe = () => {
-    callBoard();
+    // callBoard();
     // Cache DOM
     let player = 'X';
     const endgameScreen = document.getElementById('endgame');
@@ -95,10 +96,27 @@
       notification.innerHTML = `${player} wins a sweet dub`;
     }
 
+    function drawScreen() {
+      endgameScreen.classList.toggle('hidden');
+      notification.innerHTML = 'Its a draw';
+    }
+
+    function checkForDraw() {
+      for (let i = 0; i < squares.length; i++) {
+        if (squares[i].innerHTML === '') {
+          return false;
+        }
+      }
+      return true;
+    }
+
     function squareHandler(e) {
       const square = e.target;
       const currentSymbol = xTurn ? circleSymbol : exSymbol;
       drawMark(square, currentSymbol);
+      if (checkForDraw()) {
+        drawScreen();
+      }
       if (checkForWin()) {
         victoryScreen();
       }
